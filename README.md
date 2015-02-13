@@ -1,7 +1,7 @@
 Using this is simple.
 
-1. Create an account on https://erbertandgerberts-delivery-1088.patronpath.com/bbLogIn.php?cmd=reg
-2. Create a config.json with the following fields filed in:
+Step 1. Create an account on https://erbertandgerberts-delivery-1088.patronpath.com/bbLogIn.php?cmd=reg
+Step 2. Create a config.json with the following fields filed in:
 ```
 {
     "email" : "lorem@ipsum.com",
@@ -13,5 +13,7 @@ Using this is simple.
     "contact" : "Amce Co"
 }
 ```
-3. ruby ryatt.rb
-4. Hit continue and enter your credit card info
+Step 3. `ruby ryatt.rb`
+Step 4. Hit continue 
+Step 5: Enter your payment info
+Step 6: Enjoy your sandwhich, AND your time savings!
