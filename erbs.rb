@@ -217,21 +217,25 @@ end
 
 # If desired, allow the user to enter their payment info as well
 # @todo: Select Pay at delivery vs Credit card
-# if config['payment']['allow payment']
-#     if config['payment']['type'] == 'credit card'
-#         @b.button(:title => 'Continue').click
-#         @b.text_field(:name => 'accountnumber').set config['payment']['accountnumber']
-#         @b.text_field(:name => 'seccode').set config['payment']['seccode']
-#         @b.select_list(:id => 'CCType').select_value(config['payment']['CCType'])
-#         @b.select_list(:name => 'month').select_value(config['payment']['month'])
-#         @b.select_list(:name => 'month').select_value(config['payment']['year'])
-#         @b.text_field(:name => 'cardname').set config['payment']['cardname']
-#         @b.text_field(:name => 'cardstreet').set config['payment']['cardstreet']
-#         @b.text_field(:name => 'cardcity').set config['payment']['cardcity']
-#         @b.select_list(:id => 'cardstreet').select_value(config['payment']['cardstreet'])
-#         @b.text_field(:name => 'cardzip').set config['payment']['cardzip']
-#         @b.text_field(:name => 'cardphone').set config['payment']['cardphone']
-#     else
-#         @b.text_field(:name => 'ConfPhone').set config['payment']['ConfPhone']
-#     end
-# end
+if config['payment']['allow payment']
+     @b.button(:title => 'Continue').click
+
+    if config['payment']['type'] == 'credit card'
+        @b.radio(:name => 'paytype', :value => 'cc').set
+        @b.text_field(:name => 'accountnumber').set config['payment']['accountnumber']
+        @b.text_field(:name => 'seccode').set config['payment']['seccode']
+        @b.select_list(:id => 'CCType').select_value(config['payment']['CCType'])
+        @b.select_list(:name => 'month').select_value(config['payment']['month'])
+        @b.select_list(:name => 'year').select_value(config['payment']['year'])
+        @b.text_field(:name => 'cardname').set config['payment']['cardname']
+        @b.text_field(:name => 'cardstreet').set config['payment']['cardstreet']
+        @b.text_field(:name => 'cardcity').set config['payment']['cardcity']
+        @b.select_list(:name => 'cardstate').select_value(['payment']['cardstate'])
+        @b.select_list(:id => 'cardstreet').select_value(config['payment']['cardstreet'])
+        @b.text_field(:name => 'cardzip').set config['payment']['cardzip']
+        @b.text_field(:name => 'cardphone').set config['payment']['cardphone']
+    else
+        @b.radio(:name => 'paytype', :value => 'cash').set
+        @b.text_field(:name => 'ConfPhone').set config['payment']['ConfPhone']
+    end
+end
