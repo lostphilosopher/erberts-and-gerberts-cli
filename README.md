@@ -2,9 +2,11 @@
 
 ##Using this is simple.
 
-**Step 1.** Create an account on https://erbertandgerberts-delivery-1088.patronpath.com/bbLogIn.php?cmd=reg
+**Step 1.** Make sure you have Ruby and watir-webdriver installed.
 
-**Step 2.** Create a config.json with the following fields filed in:
+**Step 2.** Create an account on [Erberts and Gerberts](https://erbertandgerberts-delivery-1088.patronpath.com/bbLogIn.php?cmd=reg).
+
+**Step 3.** Create a config.json with the following fields filed in (alter the order to your liking, using the menu.json file):
 ```
 {
     "email" : "lorem@ipsum.com",
@@ -14,17 +16,35 @@
     "city" : "Anywhere",
     "zip" : "12345",
     "contact" : "Amce Co",
-    "sandwiches" : ["titan", "bluefinger"],
-    "soups" : ["broccoli"],
-    "extras" : ["chips"]    
+    "sandwiches" : [{
+        "name" : "titan",
+        "label" : "John Doe",
+        "bread" : "wheat",
+        "options" : ["no mayo"]
+    }],
+    "soups" : [{
+        "name" : "broccoli cheddar cheese",
+        "size" : "cup",
+        "label" : "Major Tom"
+    }],
+    "sides" : [{
+        "name" : "original potato chips"
+    }],
+    "drinks" : [{
+        "name" : "bottled dasani water"
+    }]   
 }
 ```
-**Step 3.** `ruby ryatt.rb` (make sure you have ruby and watir-webdriver installed)
+*Options supported: "no mayo"*
 
-**Step 4.** Hit continue 
+*Bread supported: "french", "wheat"*
 
-**Step 5:** Enter your payment info
+**Step 4.** `ruby ryatt.rb` (make sure you have ruby and watir-webdriver installed)
 
-**Step 6:** Enjoy your sandwich, AND your time savings!
+**Step 5.** Hit continue.
 
-Full disclosure: I don't work for Erberts and Gerberts. I am in no way affiliated with Erberts and Gerberts. I just like their sandwiches.
+**Step 6:** Enter your payment info.
+
+**Step 7:** Enjoy your sandwich, AND your time savings!
+
+*Full disclosure: I don't work for Erberts and Gerberts. I am in no way affiliated with Erberts and Gerberts. I just like their sandwiches.*
