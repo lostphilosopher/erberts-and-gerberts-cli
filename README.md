@@ -33,9 +33,22 @@
     "drinks" : [{
         "name" : "bottled dasani water"
     }],
-    "payment" : [{
+    "payment" : {
         "allow payment" : true,
-    }]
+        "type" : "credit card",
+        "accountnumber" : "0000 0000 0000 0000",
+        "seccode" : "000",
+        "CCType" : "1",
+        "month" : "10",
+        "year" : "2020",
+        "cardname" : "JOHN DOE",
+        "cardstreet" : "123 Fake St.",
+        "cardcity" : "Cityville",
+        "cardstate" : "MN",
+        "cardzip" : "00000",
+        "cardphone" : "123 456 7890",
+        "ConfPhone" : "123 456 7890"
+    }
 }
 ```
 *Options supported: "no mayo"*

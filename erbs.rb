@@ -218,7 +218,9 @@ end
 # If desired, allow the user to enter their payment info as well
 # @todo: Select Pay at delivery vs Credit card
 if config['payment']['allow payment']
-     @b.button(:title => 'Continue').click
+    @b.button(:title => 'Continue').click
+
+    puts "Setting up payment via #{config['payment']['type']}" 
 
     if config['payment']['type'] == 'credit card'
         @b.radio(:name => 'paytype', :value => 'cc').set
@@ -230,8 +232,8 @@ if config['payment']['allow payment']
         @b.text_field(:name => 'cardname').set config['payment']['cardname']
         @b.text_field(:name => 'cardstreet').set config['payment']['cardstreet']
         @b.text_field(:name => 'cardcity').set config['payment']['cardcity']
-        @b.select_list(:name => 'cardstate').select_value(['payment']['cardstate'])
-        @b.select_list(:id => 'cardstreet').select_value(config['payment']['cardstreet'])
+        @b.select_list(:name => 'cardstate').select_value(config['payment']['cardstate'])
+        @b.text_field(:name => 'cardstreet').set config['payment']['cardstreet']
         @b.text_field(:name => 'cardzip').set config['payment']['cardzip']
         @b.text_field(:name => 'cardphone').set config['payment']['cardphone']
     else
