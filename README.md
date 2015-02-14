@@ -32,14 +32,17 @@
     }],
     "drinks" : [{
         "name" : "bottled dasani water"
-    }]   
+    }],
+    "payment" : [{
+        "allow payment" : true,
+    }]
 }
 ```
 *Options supported: "no mayo"*
 
 *Bread supported: "french", "wheat"*
 
-**Step 4.** `ruby ryatt.rb` (make sure you have ruby and watir-webdriver installed)
+**Step 4.** `ruby erbs.rb` (make sure you have ruby and watir-webdriver installed)
 
 **Step 5.** Hit continue.
 

@@ -214,3 +214,24 @@ end
 # Go to checkout page
 @b.goto "https://erbertandgerberts-delivery-1088.patronpath.com/checkout.php"
 @b.text_field(:name => 'contactname').set config['contact']
+
+# If desired, allow the user to enter their payment info as well
+# @todo: Select Pay at delivery vs Credit card
+# if config['payment']['allow payment']
+#     @b.button(:title => 'Continue').click
+#     @b.text_field(:name => 'accountnumber').set config['payment']['accountnumber']
+#     @b.text_field(:name => 'seccode').set config['payment']['seccode']
+#     @b.select_list(:id => 'CCType').select_value(config['payment']['CCType'])
+#     @b.select_list(:name => 'month').select_value(config['payment']['month'])
+#     @b.select_list(:name => 'month').select_value(config['payment']['year'])
+#     @b.text_field(:name => 'cardname').set config['payment']['cardname']
+#     @b.text_field(:name => 'cardstreet').set config['payment']['cardstreet']
+#     @b.text_field(:name => 'cardcity').set config['payment']['cardcity']
+#     @b.select_list(:id => 'cardstreet').select_value(config['payment']['cardstreet'])
+#     @b.text_field(:name => 'cardzip').set config['payment']['cardzip']
+#     @b.text_field(:name => 'cardphone').set config['payment']['cardphone']
+# end
+
+
+
+
