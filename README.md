@@ -6,7 +6,7 @@
 
 **Step 2.** Create an account on [Erberts and Gerberts](https://erbertandgerberts-delivery-1088.patronpath.com/bbLogIn.php?cmd=reg).
 
-**Step 3.** Create a config.json with the following fields filed in (alter the order to your liking, using the menu.json file):
+**Step 3.** Create a config.json with the following fields filled in (alter the order to your liking, using the menu.json file):
 ```
 {
     "email" : "lorem@ipsum.com",
