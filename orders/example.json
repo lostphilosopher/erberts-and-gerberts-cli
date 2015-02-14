@@ -1,0 +1,33 @@
+{
+    "address1" : "1234 Fake St.",
+    "address2" : "#123",
+    "city" : "Eagan",
+    "state" : "MN",
+    "zip" : "55121",
+    "contact" : "Acme Co",
+    "allow payment" : true,
+    "payment type" : "credit card",
+    "sandwiches" : [{
+        "name" : "titan",
+        "label" : "Jim",
+        "bread" : "wheat",
+        "options" : []
+    },
+    {
+        "name" : "jacob bluefinger",
+        "label" : "John",
+        "bread" : "wheat",
+        "options" : ["no mayo"]
+    }],
+    "soups" : [{
+        "name" : "broccoli cheddar cheese",
+        "size" : "cup",
+        "label" : "Jane"
+    }],
+    "sides" : [{
+        "name" : "original potato chips"
+    }],
+    "drinks" : [{
+        "name" : "bottled dasani water"
+    }]    
+}

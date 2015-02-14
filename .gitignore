@@ -1,1 +1,3 @@
+orders/**
+!orders/example.json
 config.json

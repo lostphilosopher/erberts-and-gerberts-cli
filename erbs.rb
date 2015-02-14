@@ -1,11 +1,31 @@
 require 'watir-webdriver'
 require 'json'
 
-# Set up config
+# Parse config settings
 file = File.open("config.json", "rb")
 contents = file.read
 file.close
 config = JSON.parse(contents)
+
+# Parse order file, default or command line parameter
+if !ARGV[0]
+    puts "Using default order file: orders/default.json"  
+    if File.file?("orders/default.json")
+        file = File.open("orders/default.json", "rb")
+    else
+        abort('Error: The default order file (orders/default.json) has not been created!')
+    end    
+else
+    if File.file?("orders/#{ARGV[0]}")
+        puts "Using order file: orders/#{ARGV[0]}"
+        file = File.open("orders/#{ARGV[0]}", "rb")
+    else
+        abort("Error: File with name orders/#{ARGV[0]} does not exist!")
+    end
+end
+contents = file.read
+file.close
+order = JSON.parse(contents)
 
 # Parse the menu file
 file = File.open("menu.json", "rb")
@@ -25,11 +45,11 @@ menu = JSON.parse(contents)
 @b.button(:title => 'Login').click
 
 # Enter the CaringBridge address
-@b.text_field(:name => 'check_address').set config['address1']
-@b.text_field(:name => 'check_address2').set config['address2']
-@b.text_field(:name => 'check_city').set config['city']
-@b.text_field(:name => 'check_zip').set config['zip']
-# @b.select_list(:name => 'check_state').set 'MN'
+@b.text_field(:name => 'check_address').set order['address1']
+@b.text_field(:name => 'check_address2').set order['address2']
+@b.text_field(:name => 'check_city').set order['city']
+@b.text_field(:name => 'check_zip').set order['zip']
+@b.select_list(:name => 'check_state').select_value(order['state'])
 @b.img(:title => 'Check Address').click
 @b.execute_script "window.alert = function() { return true; }"
 
@@ -38,7 +58,7 @@ menu = JSON.parse(contents)
 @b.button(:title => 'Continue').click
 
 # Order sandwiches
-config['sandwiches'].each do |item|
+order['sandwiches'].each do |item|
     puts "Ordering: #{item['name']}"
 
     validOrder = true
@@ -108,7 +128,7 @@ config['sandwiches'].each do |item|
 end
 
 # Order soups
-config['soups'].each do |item|
+order['soups'].each do |item|
     puts "Ordering: #{item['name']}"
 
     validOrder = true
@@ -142,7 +162,7 @@ config['soups'].each do |item|
 end
 
 # Sides
-config['sides'].each do |item|
+order['sides'].each do |item|
     puts "Ordering: #{item['name']}"
 
     validOrder = true
@@ -184,7 +204,7 @@ config['sides'].each do |item|
 end
 
 # Drinks
-config['drinks'].each do |item|
+order['drinks'].each do |item|
     puts "Ordering: #{item['name']}"
 
     validOrder = true
@@ -213,16 +233,16 @@ end
 
 # Go to checkout page
 @b.goto "https://erbertandgerberts-delivery-1088.patronpath.com/checkout.php"
-@b.text_field(:name => 'contactname').set config['contact']
+@b.text_field(:name => 'contactname').set order['contact']
 
 # If desired, allow the user to enter their payment info as well
 # @todo: Select Pay at delivery vs Credit card
-if config['payment']['allow payment']
+if order['allow payment']
     @b.button(:title => 'Continue').click
 
-    puts "Setting up payment via #{config['payment']['type']}" 
+    puts "Setting up payment via #{order['payment type']}" 
 
-    if config['payment']['type'] == 'credit card'
+    if order['payment type'] == 'credit card'
         @b.radio(:name => 'paytype', :value => 'cc').set
         @b.text_field(:name => 'accountnumber').set config['payment']['accountnumber']
         @b.text_field(:name => 'seccode').set config['payment']['seccode']
@@ -241,3 +261,5 @@ if config['payment']['allow payment']
         @b.text_field(:name => 'ConfPhone').set config['payment']['ConfPhone']
     end
 end
+
+puts "Final step(s) must be completed manually. Enjoy your Erbs!"
