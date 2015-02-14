@@ -30,7 +30,7 @@
 
 *NOTE: Never store config.json on a public repo! It is under .gitignore and should stay that way.*
 
-**Step 4.** Create a default.json file with your "usual" Erberts and Gerberts order and address filled in (use orders/example.json and menu.json as a guide) **NOTE:** Make sure you use an address within the Erberts and Gerberts delivery area. The script will fail on orders outside of deliever range.
+**Step 4.** Create an orders/default.json file with your "usual" Erberts and Gerberts order and delivery address filled in (use orders/example.json and menu.json as a guide) **NOTE:** Make sure you use an address within the Erberts and Gerberts delivery area. The script will fail on orders outside of delivery range.
 
 *payment type supported: "credit card", "pay on delivery"*
 
@@ -50,7 +50,7 @@
 
 *Full disclosure: I don't work for Erberts and Gerberts. I am in no way affiliated with Erberts and Gerberts. I just like their sandwiches.*
 
-*Known issues: * 
+**Known issues:** 
 
 - This script is architected like an amateur Rubyist wrote it in a couple hours. 
 - There should be testing of some kind.
