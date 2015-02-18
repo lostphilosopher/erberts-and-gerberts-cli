@@ -289,7 +289,7 @@ puts "Total: $#{total}"
 # If desired, allow the user to enter their payment info as well
 if order['allow payment'] && config['payment']
     # Check for Erberts and Gerberts errors
-    if !@b.td(:class, 'contenterror').text.nil?
+    if @b.td(:class, 'contenterror').exists?
         abort('Error: Their are errors on the page.')
     end
     @b.button(:title => 'Continue').click
