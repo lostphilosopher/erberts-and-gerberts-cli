@@ -2,10 +2,21 @@ require 'watir-webdriver'
 require 'json'
 
 # Parse config settings
+if !File.file?("config.json")
+    abort('Error: No config file (config.json) found.')
+end
 file = File.open("config.json", "rb")
 contents = file.read
 file.close
 config = JSON.parse(contents)
+
+# Validate confg settings
+if config['email'].nil?
+    abort('Error: confg[\'email\'] is undefined')
+end
+if config['password'].nil?
+    abort('Error: confg[\'password\'] is undefined')
+end
 
 # Parse order file, default or command line parameter
 if !ARGV[0]
@@ -26,6 +37,19 @@ end
 contents = file.read
 file.close
 order = JSON.parse(contents)
+
+# Validate order info
+if order['address1'].nil?
+    abort('Error: order[\'address1\'] is undefined')
+elsif order['city'].nil?
+    abort('Error: order[\'city\'] is undefined')
+elsif order['state'].nil?
+    abort('Error: order[\'state\'] is undefined')
+elsif order['zip'].nil?
+    abort('Error: order[\'zip\'] is undefined')
+elsif order['address2'].nil?
+    order['address2'] = ""
+end
 
 # Parse the menu file
 file = File.open("menu.json", "rb")
@@ -113,7 +137,7 @@ if !order['sandwiches'].nil?
         # If the order is valud, place it
         if validOrder
             # Sandwich options
-            if item['options'].include? 'no mayo'
+            if  !item['options'].nil? && (item['options'].include? 'no mayo')
                 @b.checkbox(:id => 'box1-0').set            
             end
             if item['bread'] == "wheat"
@@ -122,7 +146,9 @@ if !order['sandwiches'].nil?
                 @b.select_list(:id => 'item_options[]').select_value('b6c1e8343d2198110a6de554fba7bac5')
             end
 
-            @b.text_field(:name => 'label').set item['label']
+            if !item['label'].nil?
+                @b.text_field(:name => 'label').set item['label']
+            end
 
             @b.button(:id => 'AddToPlate').click 
         end 
@@ -157,8 +183,11 @@ if !order['soups'].nil?
                 @b.select_list(:id => 'item_options[]').select_value('8a111aafe2d284595cd6389e7de51d8e')
             else 
                 @b.select_list(:id => 'item_options[]').select_value('28e90113ff0165a922ad0a70d0b247f6')    
-            end    
-            @b.text_field(:name => 'label').set item['label']
+            end 
+
+            if !item['label'].nil?
+                @b.text_field(:name => 'label').set item['label']
+            end
 
             @b.button(:id => 'AddToPlate').click          
         end
@@ -241,16 +270,61 @@ end
 
 # Go to checkout page
 @b.goto "https://erbertandgerberts-delivery-1088.patronpath.com/checkout.php"
-@b.text_field(:name => 'contactname').set order['contact']
+if !order['contact'].nil?
+    @b.text_field(:name => 'contactname').set order['contact']
+end
+
+# Read order total
+orderTotal = @b.tds(:class, 'myorder_total_line')[1].text
+orderTotal = orderTotal.delete('$').to_f
+puts "Order total: $#{orderTotal}"
+tip = (orderTotal * 0.2).round(2)
+puts "Suggested tip: $#{tip}"
+total = orderTotal + tip
+total = total.round(2)
+puts "Total: $#{total}"
+# Add integration with Twitter
+#puts "Tweet about it: https://twitter.com/intent/tweet?button_hashtag=CommandFood&text=I%20just%20ordered%20Eberts%20and%20Gerberts%20from%20the%20command%20line"
 
 # If desired, allow the user to enter their payment info as well
-# @todo: Select Pay at delivery vs Credit card
-if order['allow payment']
+if order['allow payment'] && config['payment']
+    # Check for Erberts and Gerberts errors
+    if !@b.td(:class, 'contenterror').text.nil?
+        abort('Error: Their are errors on the page.')
+    end
     @b.button(:title => 'Continue').click
 
     puts "Setting up payment via #{order['payment type']}" 
 
+    # Input credi card info
     if order['payment type'] == 'credit card'
+        # Validate credit card info
+        if config['payment']['accountnumber'].nil?
+            abort('Error: config[\'payment\'][\'accountnumber\']')
+        elsif config['payment']['seccode'].nil?
+            abort('Error: config[\'payment\'][\'seccode\']')
+        elsif config['payment']['CCType'].nil?
+            abort('Error: config[\'payment\'][\'CCType\']')
+        elsif config['payment']['month'].nil?
+            abort('Error: config[\'payment\'][\'month\']')
+        elsif config['payment']['year'].nil?
+            abort('Error: config[\'payment\'][\'year\']')
+        elsif config['payment']['cardname'].nil?
+            abort('Error: config[\'payment\'][\'cardname\']')
+        elsif config['payment']['cardstreet'].nil?
+            abort('Error: config[\'payment\'][\'cardstreet\']')
+        elsif config['payment']['cardcity'].nil?
+            abort('Error: config[\'payment\'][\'cardcity\']')
+        elsif config['payment']['cardstate'].nil?
+            abort('Error: config[\'payment\'][\'cardstate\']')
+        elsif config['payment']['cardzip'].nil?
+            abort('Error: config[\'payment\'][\'cardzip\']')
+        elsif config['payment']['cardphone'].nil?
+            abort('Error: config[\'payment\'][\'cardphone\']')
+        elsif config['payment']['ConfPhone'].nil?
+            abort('Error: config[\'payment\'][\'ConfPhone\']')
+        end
+
         @b.radio(:name => 'paytype', :value => 'cc').set
         @b.text_field(:name => 'accountnumber').set config['payment']['accountnumber']
         @b.text_field(:name => 'seccode').set config['payment']['seccode']
@@ -261,7 +335,6 @@ if order['allow payment']
         @b.text_field(:name => 'cardstreet').set config['payment']['cardstreet']
         @b.text_field(:name => 'cardcity').set config['payment']['cardcity']
         @b.select_list(:name => 'cardstate').select_value(config['payment']['cardstate'])
-        @b.text_field(:name => 'cardstreet').set config['payment']['cardstreet']
         @b.text_field(:name => 'cardzip').set config['payment']['cardzip']
         @b.text_field(:name => 'cardphone').set config['payment']['cardphone']
     else
